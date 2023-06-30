@@ -8,7 +8,7 @@ function init()
 		try
 		{
 			inp = inputDecode(queryString.slice(1));
-			//console.log("input: "+inp);
+			console.log("input: "+inp);
 			document.getElementById("myText").value = inp;
 			//console.log(document.getElementById("myText").value);
 			calculate()
@@ -131,11 +131,12 @@ function getParentUrl() {
 
 
     if (isInIframe) {
-   		//console.log("original url: "+document.referrer);
+   		console.log("iFrame fetch - original url: "+document.referrer);
         parentUrl = document.referrer.replaceAll("https://ivanbje.github.io/frosthaven-item-display","");
     }
     else
     {
+    	console.log("window location search:"+window.location.search)
     	parentUrl = window.location.search;
     }
 
