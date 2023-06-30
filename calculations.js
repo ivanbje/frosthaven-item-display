@@ -50,9 +50,9 @@ function calculate() {
   	var permalink = document.getElementById("permalink")
   	permalink.innerHTML = ''
 	var plink = document.createElement("span");
-	plink.innerHTML = "<br>permalink: https://ivanbje.itch.io/frosthaven-item-display?"+urlext+"<br><br>";
+	plink.innerHTML = "<br>permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext+"<br><br>";
 	//permalink.appendChild(plink);
-	console.log("Desktop chrome permalink: https://ivanbje.itch.io/frosthaven-item-display?"+urlext)
+	console.log("Desktop chrome permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext)
 
 
   	var images = document.getElementById("images")
@@ -132,7 +132,7 @@ function getParentUrl() {
 
     if (isInIframe) {
    		//console.log("original url: "+document.referrer);
-        parentUrl = document.referrer.replaceAll("https://ivanbje.itch.io/frosthaven-item-display","");
+        parentUrl = document.referrer.replaceAll("https://ivanbje.github.io/frosthaven-item-display","");
     }
     else
     {
