@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="calculations.js"></script>
+		<title>Item display list</title>
+		<style>
+			body{ background-color: #111520;
+				margin-left: 3em;
+				margin-right: 3em;
+				}
+			img{ 
+				width: 14em; 
+				margin-right: 0.5em;
+				margin-left: 0.5em;
+				border: 5px solid #555;
+			}
+			p{color: #eee; margin-left: 1em; margin-bottom: 0.1em;}
+			span{color: #eee;
+				margin-top: 2em;
+				margin-bottom: 2em;}
+			h1{color: #ACD5F3;}
+			form{
+				margin-top: 1em;
+				margin-bottom: 2em;
+			}
+			#ilength{color: #ACD5F3;}
+			div{float:left;}
+		</style>
+	</head>
+
+	<body>
+		<h1>Frosthaven item display</h1>
+
+		<span>Item List:</span>
+		<input type="text" id="myText" placeholder="item csv" value="" size="50"><br><br>
+		<span>Identified items: </span><span id="ilist">0</span><br>
+		<span>Number of items: </span><span id="ilength">0</span>
+		<br>
+		<div id='permalink'></div><br>
+
+		<form id="calc-form">
+			<div>
+				<input type="button" id="calcbtn" value="Display!" onclick="calculate()">
+			</div>
+		</form>
+		<div id='images'>
+		</div>
+	</body>
+</html>
