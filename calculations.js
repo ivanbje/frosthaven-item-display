@@ -210,6 +210,7 @@ function inputDecode(string)
 		if(isCharacter!=wasCharacter)
 		{
 			res = res + ",";
+			wasCharacter = isCharacter;
 		}
 
 		if(isCharacter)
