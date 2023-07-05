@@ -207,7 +207,7 @@ function inputDecode(string)
 			isCharacter = false;
 		}
 
-		if(isCharacter && !wasCharacter)
+		if(!isCharacter && wasCharacter)
 		{
 			res = res + ",";
 		}
@@ -235,7 +235,11 @@ function inputDecode(string)
 
 
 
-
+        res = res.replaceAll(",,",",");
+	if(res[res.length-1]==",")
+	{
+		res.substring(0,res.length-1);
+	}
 	return res;
 }
 
