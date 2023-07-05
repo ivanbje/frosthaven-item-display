@@ -207,11 +207,12 @@ function inputDecode(string)
 			isCharacter = false;
 		}
 
-		if(isCharacter!=wasCharacter)
+		if(isCharacter && !wasCharacter)
 		{
 			res = res + ",";
-			wasCharacter = isCharacter;
 		}
+
+		wasCharacter = isCharacter;
 
 		if(isCharacter)
 		{
@@ -220,12 +221,12 @@ function inputDecode(string)
 		}
 		else if(string[i] == "p")
 		{
-			res = res + "g" + parseInt(string[i+1]+string[i+2], 18).toString().padStart(3,0);
+			res = res + "g" + parseInt(string[i+1]+string[i+2], 18).toString().padStart(3,0)+",";
 			i+=3;
 		}
 		else
 		{
-			res = res + parseInt(string[i]+string[i+1], 18).toString().padStart(3,0);
+			res = res + parseInt(string[i]+string[i+1], 18).toString().padStart(3,0)+",";
 			i+=2;
 		}
 
