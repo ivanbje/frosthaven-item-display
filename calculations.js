@@ -207,10 +207,12 @@ function inputDecode(string)
 			isCharacter = false;
 		}
 
-		if(isCharacter!=wasCharacter)
+		if(!isCharacter && wasCharacter)
 		{
 			res = res + ",";
 		}
+
+		wasCharacter = isCharacter;
 
 		if(isCharacter)
 		{
@@ -219,7 +221,7 @@ function inputDecode(string)
 		}
 		else if(string[i] == "p")
 		{
-			res = res + "g" + parseInt(string[i+1]+string[i+2], 32).toString().padStart(3,0);
+			res = res + "g" + parseInt(string[i+1]+string[i+2], 32).toString().padStart(3,0)+",";
 			i+=3;
 		}
 		else
@@ -228,12 +230,13 @@ function inputDecode(string)
 			if(num>300)
 			{
 				num -= 300;
-				res = res +"g"+ num.toString().padStart(3,0);
+				res = res +"g"+ num.toString().padStart(3,0)+",";
 			}
 			else
 			{
-				res = res + num.toString().padStart(3,0);
+				res = res + num.toString().padStart(3,0)+",";
 			}
+
 			i+=2;
 		}
 
@@ -242,7 +245,12 @@ function inputDecode(string)
 
 
 
+    res = res.replaceAll(",,",",");
 
+	if(res[res.length-1]==",")
+	{
+		res = res.substring(0,res.length-1);
+	}
 	return res;
 }
 
