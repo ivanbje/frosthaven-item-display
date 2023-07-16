@@ -50,8 +50,8 @@ function calculate() {
   	var permalink = document.getElementById("permalink")
   	permalink.innerHTML = ''
 	var plink = document.createElement("span");
-	plink.innerHTML = "<br>permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext+"<br><br>";
-	//permalink.appendChild(plink);
+	plink.innerHTML = "permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext+"";
+	permalink.appendChild(plink);
 	console.log("Desktop chrome permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext)
 
 
@@ -72,7 +72,7 @@ function calculate() {
 		for(var j=0; j<itemArray.length; j++)
 		{
 			itemID = itemlist[i].toString().replaceAll("g","");
-			if(itemArray[j].indexOf(itemID) != -1)
+			if(itemArray[j].indexOf(itemID) != -1 && itemArray[j].indexOf(itemID) <6)
 			{
 				if(itemArray[j].indexOf('back') == -1)
 				{
@@ -162,12 +162,12 @@ function inputEncode(array)
 	{
 		if(array[i].isNumber())
 		{
-			res = res + Number(array[i]).toString(18).padStart(2,0)
+			res = res + Number(array[i]).toString(32).padStart(2,0)
 			//console.log("path 1"+ Number(array[i]).toString(18).padStart(2,0));
 		}
 		else if (array[i].replaceAll("g","").isNumber())
 		{
-			res = res + "p" + Number(array[i].replaceAll("g","")).toString(18).padStart(2,0)
+			res = res + (Number(array[i].replaceAll("g",""))+300).toString(32).padStart(2,0)
 			//console.log("p" + Number(array[i].replaceAll("g","")).toString(18).padStart(2,0))
 		}
 		else
@@ -219,12 +219,21 @@ function inputDecode(string)
 		}
 		else if(string[i] == "p")
 		{
-			res = res + "g" + parseInt(string[i+1]+string[i+2], 18).toString().padStart(3,0);
+			res = res + "g" + parseInt(string[i+1]+string[i+2], 32).toString().padStart(3,0);
 			i+=3;
 		}
 		else
 		{
-			res = res + parseInt(string[i]+string[i+1], 18).toString().padStart(3,0);
+			var num = parseInt(string[i]+string[i+1], 32);
+			if(num>300)
+			{
+				num -= 300;
+				res = res +"g"+ num.toString().padStart(3,0);
+			}
+			else
+			{
+				res = res + num.toString().padStart(3,0);
+			}
 			i+=2;
 		}
 
