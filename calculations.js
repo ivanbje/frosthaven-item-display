@@ -50,7 +50,7 @@ function calculate() {
   	var permalink = document.getElementById("permalink")
   	permalink.innerHTML = ''
 	var plink = document.createElement("span");
-	plink.innerHTML = "permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext+"";
+	plink.innerHTML = "https://ivanbje.github.io/frosthaven-item-display?"+urlext+"";
 	permalink.appendChild(plink);
 	console.log("Desktop chrome permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext)
 
