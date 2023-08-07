@@ -1,3 +1,5 @@
+var gLastItem = 0;
+
 function init()
 {
 	//console.log("ff fix?:" + window.top.location.href)
@@ -8,7 +10,7 @@ function init()
 		try
 		{
 			inp = inputDecode(queryString.slice(1));
-			console.log("input: "+inp);
+			//console.log("input: "+inp);
 			document.getElementById("myText").value = inp;
 			//console.log(document.getElementById("myText").value);
 			calculate()
@@ -52,7 +54,7 @@ function calculate() {
 	var plink = document.createElement("span");
 	plink.innerHTML = "https://ivanbje.github.io/frosthaven-item-display?"+urlext+"";
 	permalink.appendChild(plink);
-	console.log("Desktop chrome permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext)
+	//console.log("Desktop chrome permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext)
 
 
   	var images = document.getElementById("images")
@@ -131,12 +133,12 @@ function getParentUrl() {
 
 
     if (isInIframe) {
-   		console.log("iFrame fetch - original url: "+document.referrer);
+   		//console.log("iFrame fetch - original url: "+document.referrer);
         parentUrl = document.referrer.replaceAll("https://ivanbje.github.io/frosthaven-item-display","");
     }
     else
     {
-    	console.log("window location search:"+window.location.search)
+    	//console.log("window location search:"+window.location.search)
     	parentUrl = window.location.search;
     }
 
@@ -158,16 +160,26 @@ function isNumeric(str) {
 function inputEncode(array)
 {
 	res=""
+	gLastItem = 0;
 	for(var i=0;i<array.length;i++)
 	{
 		if(array[i].isNumber())
 		{
-			res = res + Number(array[i]).toString(32).padStart(2,0)
+			//console.log("looking at item:"+array[i]+"and comparing it to lastItem:"+gLastItem);
+			if(Number(array[i]) == gLastItem +1)
+			{
+				res = res + "x";
+			}
+			else
+			{
+				res = res + Number(array[i]).toString(30).padStart(2,0)
+			}
 			//console.log("path 1"+ Number(array[i]).toString(18).padStart(2,0));
+			gLastItem = Number(array[i]);
 		}
 		else if (array[i].replaceAll("g","").isNumber())
 		{
-			res = res + (Number(array[i].replaceAll("g",""))+300).toString(32).padStart(2,0)
+			res = res + (Number(array[i].replaceAll("g",""))+300).toString(30).padStart(2,0)
 			//console.log("p" + Number(array[i].replaceAll("g","")).toString(18).padStart(2,0))
 		}
 		else
@@ -177,13 +189,24 @@ function inputEncode(array)
 		}
 	}
 
+	res = res.replaceAll("xx","y");
+	res = res.replaceAll("yy","z");
+	res = res.replaceAll("zz","w");
+	res = res.replaceAll("ww","v");
+
 	return res;
 }
 
 function inputDecode(string)
 {
+	string = string.replaceAll("v","ww")
+	string = string.replaceAll("w","zz");
+	string = string.replaceAll("z","yy");
+	string = string.replaceAll("y","xx");
+
 	res="";
 	i=0;
+	gLastItem = 0;
 
 	if(containsUppercase(string[i]))
 	{
@@ -198,6 +221,20 @@ function inputDecode(string)
 
 	while(i<string.length)
 	{
+		if(string[i] == "x")
+		{
+			if(res[res.length-1]!=",")
+			{
+				res = res+","
+			}
+			//console.log("before " + gLastItem)
+			res = res+(Number(gLastItem)+1).toString().padStart(3,0)+","
+			gLastItem = Number(gLastItem)+1;
+			//console.log("after " + gLastItem)
+			i+=1;
+			continue;
+		}
+
 		if(containsUppercase(string[i]))
 		{
 			isCharacter = true;
@@ -221,12 +258,12 @@ function inputDecode(string)
 		}
 		else if(string[i] == "p")
 		{
-			res = res + "g" + parseInt(string[i+1]+string[i+2], 32).toString().padStart(3,0)+",";
+			res = res + "g" + parseInt(string[i+1]+string[i+2], 30).toString().padStart(3,0)+",";
 			i+=3;
 		}
 		else
 		{
-			var num = parseInt(string[i]+string[i+1], 32);
+			var num = parseInt(string[i]+string[i+1], 30);
 			if(num>300)
 			{
 				num -= 300;
@@ -234,7 +271,9 @@ function inputDecode(string)
 			}
 			else
 			{
-				res = res + num.toString().padStart(3,0)+",";
+				var newnum = num.toString().padStart(3,0);
+				gLastItem = newnum;
+				res = res + newnum+",";
 			}
 
 			i+=2;
