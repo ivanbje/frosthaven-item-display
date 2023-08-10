@@ -1,4 +1,5 @@
 var gLastItem = 0;
+var addMatMinus = 'z1234567890qwertyuiopasdfghjklnmQWERTYUIOPASDFGHJKLZXCVBNM+-'
 
 function init()
 {
@@ -154,10 +155,21 @@ function isNumeric(str) {
 
 
 
-
-
-
 function inputEncode(array)
+{
+	alg = encodeAlgorithmBase(array);
+	
+	alt = encodeAlgorithmMinus(array);
+	if(alt.length < alg.length)
+	{
+		alg = alt;
+	}
+
+	return alg;
+}
+
+
+function encodeAlgorithmBase(array)
 {
 	res=""
 	gLastItem = 0;
@@ -197,7 +209,84 @@ function inputEncode(array)
 	return res;
 }
 
+function encodeAlgorithmMinus(array)
+{
+	res="-"
+	addMat = addMatMinus;
+
+	gLastItem = 0;
+	for(var i=0;i<array.length;i++)
+	{
+		var nextnum = -1;
+		if(array[i].isNumber())
+		{
+			var nextnum = Number(array[i])
+			
+		}
+		else if (array[i].replaceAll("g","").isNumber())
+		{
+			var nextnum = Number(array[i].replaceAll("g",""))+270;
+		}
+
+		//console.log(nextnum)
+		if(nextnum != -1)
+		{
+			if( (nextnum-gLastItem)<addMat.length && (nextnum-gLastItem)>0)
+			{
+				res = res + addMat[(nextnum-gLastItem)-1];
+			}
+			else
+			{
+				res = res + "this is a long string"
+			}
+			gLastItem = Number(nextnum);
+		}
+		else
+		{
+			if(i==0)
+			{
+				res = res + "("			}
+			else if(array[i-1].isNumber())
+			{
+				res = res + "("
+			}
+			res = res + array[i];
+			if(i==array.length-1)
+			{
+				res = res +")"
+			}
+			else if(array[i+1].isNumber)
+			{
+				res = res +")"
+			}
+		}
+		//console.log(res);
+	}
+
+	
+	res = res.replaceAll("zz","x");
+	res = res.replaceAll("xx","c");
+	res = res.replaceAll("cc","v");
+	res = res.replaceAll("vv","b");
+	//console.log(res);
+
+	return res;
+}
+
+
 function inputDecode(string)
+{
+	if(string[0]=="-")
+	{
+		return decodeAlgorithmMinus(string.substring(1,string.length))
+	}
+	else
+	{
+		return decodeAlgorithmBase(string)
+	}
+}
+
+function decodeAlgorithmBase(string)
 {
 	string = string.replaceAll("v","ww")
 	string = string.replaceAll("w","zz");
@@ -293,13 +382,141 @@ function inputDecode(string)
 	return res;
 }
 
+function decodeAlgorithmMinus2(string)
+{
+	gLastItem = 0;
+	addMat = addMatMinus;
+	var i=0;
+	var res = ""
+	
+	string = string.replaceAll("b","vv");
+	string = string.replaceAll("v","cc");
+	string = string.replaceAll("c","xx");
+	string = string.replaceAll("x","zz");
 
+	console.log(string);
+
+	while(i<string.length)
+	{
+		//console.log(string[i] + " => " + res);
+		if(string[i]=="(")
+		{
+			i++;
+			while(i<string.length && string[i]!=")" )
+			{
+				res = res + string[i++];
+			}
+			i++
+		}
+		else
+		{
+			//console.log("glast="+gLastItem+" and addmat="+addMat.indexOf(string[i])+1)
+			nextnum = addMat.indexOf(string[i++])+gLastItem+1;
+			if(nextnum < 270)
+			{
+				res = res + nextnum;
+			}
+			else
+			{
+				res = res + "g" + (nextnum-270);
+			}
+			gLastItem = nextnum;
+		}
+		res = res + ","
+	}
+
+	res = res.replaceAll(",,",",");
+
+	if(res[res.length-1]==",")
+	{
+		res = res.substring(0,res.length-1);
+	}
+	return res;
+
+}
+
+
+function decodeAlgorithmMinus(string)
+{
+	gLastItem = 0;
+	addMat = addMatMinus;
+	var i=0;
+	var res = ""
+
+
+	ns = ''+string
+	string = "";
+	var j=0;
+	while(ns.indexOf("(") != -1 && j <ns.length)
+	{
+		console.log(ns.indexOf("("))
+		ms = ns.substring(0,ns.indexOf("("));
+		es = ns.substring(ns.indexOf("("),ns.indexOf(")")+1)
+		ms = ms.replaceAll("b","vv");
+		ms = ms.replaceAll("v","cc");
+		ms = ms.replaceAll("c","xx");
+		ms = ms.replaceAll("x","zz");
+		string = string + ms;
+		string = string + es;
+		//console.log(ns + "index " + ns.indexOf(")"))
+		ns = '' + ns.substring(ns.indexOf(")")+1, ns.length)
+		//console.log(ns)
+		j++;
+		//console.log(string)
+	}
+	ns = ns.replaceAll("b","vv");
+	ns = ns.replaceAll("v","cc");
+	ns = ns.replaceAll("c","xx");
+	ns = ns.replaceAll("x","zz");
+	string = string + ns;
+	console.log(string);
+	
+	
+	while(i<string.length)
+	{
+		//console.log(string[i] + " => " + res);
+		if(string[i]=="(")
+		{
+			i++;
+			while(i<string.length && string[i]!=")" )
+			{
+				res = res + string[i++];
+			}
+			i++
+		}
+		else
+		{
+			//console.log("glast="+gLastItem+" and addmat="+addMat.indexOf(string[i])+1)
+			nextnum = addMat.indexOf(string[i++])+gLastItem+1;
+			if(nextnum < 270)
+			{
+				res = res + nextnum;
+			}
+			else
+			{
+				res = res + "g" + (nextnum-270);
+			}
+			gLastItem = nextnum;
+		}
+		res = res + ","
+	}
+
+	res = res.replaceAll(",,",",");
+
+	if(res[res.length-1]==",")
+	{
+		res = res.substring(0,res.length-1);
+	}
+	return res;
+
+}
 
 
 function containsUppercase(str) {
   return /[A-Z]/.test(str);
 }
 String.prototype.isNumber = function(){return /^\d+$/.test(this);}
+
 
 
 
