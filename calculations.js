@@ -1,5 +1,7 @@
 var gLastItem = 0;
 var addMatMinus = 'z1234567890qwertyuiopasdfghjklnmQWERTYUIOPASDFGHJKLZXCVBNM+-'
+var plusChars = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM$-_.+!*\''
+var gloomOffset = 270;
 
 function init()
 {
@@ -37,7 +39,21 @@ function calculate() {
   	x = x.replaceAll(":",",");
   	x = x.replaceAll(";",",");
 
+  	z = ''+x;
+  	x = x.replace(/[^\x00-\x7F]/g, "");
+  	x = x.replaceAll("-","");
+  	x = x.replaceAll("+","");
+  	x = x.replaceAll("&","");
+  	x = x.replaceAll("?","");
+  	x = x.replaceAll("$","");
+  	if(x != z)
+  	{
+  		document.getElementById("myText").value = x;
+  		alert("Removed illegal Characters");
+  	}
+
   	itemlist = x.split(",");
+  	//itemlist = itemlist.reverse();
   	//console.log(itemlist);
   	urlext = inputEncode(itemlist);
 	//console.log(urlext);
@@ -165,10 +181,35 @@ function inputEncode(array)
 		alg = alt;
 	}
 
+	alt = encodeAlgorithmPlus(array);
+	if(alt.length < alg.length)
+	{
+		alg = alt;
+	}
+
 	return alg;
 }
 
+function inputDecode(string)
+{
+	if(string[0]=="-")
+	{
+		return decodeAlgorithmMinus(string.substring(1,string.length))
+	}
+	else if(string[0]=="+")
+	{
+		return decodeAlgorithmPlus(string.substring(1,string.length))
+	}
+	else
+	{
+		return decodeAlgorithmBase(string)
+	}
+}
 
+
+
+
+// Base algorithms
 function encodeAlgorithmBase(array)
 {
 	res=""
@@ -209,82 +250,6 @@ function encodeAlgorithmBase(array)
 	return res;
 }
 
-function encodeAlgorithmMinus(array)
-{
-	res="-"
-	addMat = addMatMinus;
-
-	gLastItem = 0;
-	for(var i=0;i<array.length;i++)
-	{
-		var nextnum = -1;
-		if(array[i].isNumber())
-		{
-			var nextnum = Number(array[i])
-			
-		}
-		else if (array[i].replaceAll("g","").isNumber())
-		{
-			var nextnum = Number(array[i].replaceAll("g",""))+270;
-		}
-
-		//console.log(nextnum)
-		if(nextnum != -1)
-		{
-			if( (nextnum-gLastItem)<addMat.length && (nextnum-gLastItem)>0)
-			{
-				res = res + addMat[(nextnum-gLastItem)-1];
-			}
-			else
-			{
-				res = res + "this is a long string"
-			}
-			gLastItem = Number(nextnum);
-		}
-		else
-		{
-			if(i==0)
-			{
-				res = res + "("			}
-			else if(array[i-1].isNumber())
-			{
-				res = res + "("
-			}
-			res = res + array[i];
-			if(i==array.length-1)
-			{
-				res = res +")"
-			}
-			else if(array[i+1].isNumber)
-			{
-				res = res +")"
-			}
-		}
-		//console.log(res);
-	}
-
-	
-	res = res.replaceAll("zz","x");
-	res = res.replaceAll("xx","c");
-	res = res.replaceAll("cc","v");
-	res = res.replaceAll("vv","b");
-	//console.log(res);
-
-	return res;
-}
-
-
-function inputDecode(string)
-{
-	if(string[0]=="-")
-	{
-		return decodeAlgorithmMinus(string.substring(1,string.length))
-	}
-	else
-	{
-		return decodeAlgorithmBase(string)
-	}
-}
 
 function decodeAlgorithmBase(string)
 {
@@ -382,59 +347,70 @@ function decodeAlgorithmBase(string)
 	return res;
 }
 
-function decodeAlgorithmMinus2(string)
+
+function encodeAlgorithmMinus(array)
 {
-	gLastItem = 0;
+	res="-"
 	addMat = addMatMinus;
-	var i=0;
-	var res = ""
-	
-	string = string.replaceAll("b","vv");
-	string = string.replaceAll("v","cc");
-	string = string.replaceAll("c","xx");
-	string = string.replaceAll("x","zz");
 
-	console.log(string);
-
-	while(i<string.length)
+	gLastItem = 0;
+	for(var i=0;i<array.length;i++)
 	{
-		//console.log(string[i] + " => " + res);
-		if(string[i]=="(")
+		var nextnum = -1;
+		if(array[i].isNumber())
 		{
-			i++;
-			while(i<string.length && string[i]!=")" )
-			{
-				res = res + string[i++];
-			}
-			i++
+			var nextnum = Number(array[i])
+			
 		}
-		else
+		else if (array[i].replaceAll("g","").isNumber())
 		{
-			//console.log("glast="+gLastItem+" and addmat="+addMat.indexOf(string[i])+1)
-			nextnum = addMat.indexOf(string[i++])+gLastItem+1;
-			if(nextnum < 270)
+			var nextnum = Number(array[i].replaceAll("g",""))+gloomOffset;
+		}
+
+		//console.log(nextnum)
+		if(nextnum != -1)
+		{
+			if( (nextnum-gLastItem)<addMat.length && (nextnum-gLastItem)>0)
 			{
-				res = res + nextnum;
+				res = res + addMat[(nextnum-gLastItem)-1];
 			}
 			else
 			{
-				res = res + "g" + (nextnum-270);
+				res = res + "this is a long string"
 			}
-			gLastItem = nextnum;
+			gLastItem = Number(nextnum);
 		}
-		res = res + ","
+		else
+		{
+			if(i==0)
+			{
+				res = res + "("			}
+			else if(array[i-1].isNumber())
+			{
+				res = res + "("
+			}
+			res = res + array[i];
+			if(i==array.length-1)
+			{
+				res = res +")"
+			}
+			else if(array[i+1].isNumber)
+			{
+				res = res +")"
+			}
+		}
+		//console.log(res);
 	}
 
-	res = res.replaceAll(",,",",");
+	
+	res = res.replaceAll("zz","x");
+	res = res.replaceAll("xx","c");
+	res = res.replaceAll("cc","v");
+	res = res.replaceAll("vv","b");
+	//console.log(res);
 
-	if(res[res.length-1]==",")
-	{
-		res = res.substring(0,res.length-1);
-	}
 	return res;
-
 }
-
 
 function decodeAlgorithmMinus(string)
 {
@@ -449,7 +425,7 @@ function decodeAlgorithmMinus(string)
 	var j=0;
 	while(ns.indexOf("(") != -1 && j <ns.length)
 	{
-		console.log(ns.indexOf("("))
+		//console.log(ns.indexOf("("))
 		ms = ns.substring(0,ns.indexOf("("));
 		es = ns.substring(ns.indexOf("("),ns.indexOf(")")+1)
 		ms = ms.replaceAll("b","vv");
@@ -469,7 +445,7 @@ function decodeAlgorithmMinus(string)
 	ns = ns.replaceAll("c","xx");
 	ns = ns.replaceAll("x","zz");
 	string = string + ns;
-	console.log(string);
+	//console.log(string);
 	
 	
 	while(i<string.length)
@@ -488,13 +464,13 @@ function decodeAlgorithmMinus(string)
 		{
 			//console.log("glast="+gLastItem+" and addmat="+addMat.indexOf(string[i])+1)
 			nextnum = addMat.indexOf(string[i++])+gLastItem+1;
-			if(nextnum < 270)
+			if(nextnum < gloomOffset)
 			{
 				res = res + nextnum;
 			}
 			else
 			{
-				res = res + "g" + (nextnum-270);
+				res = res + "g" + (nextnum-gloomOffset);
 			}
 			gLastItem = nextnum;
 		}
@@ -511,6 +487,186 @@ function decodeAlgorithmMinus(string)
 
 }
 
+function encodeAlgorithmPlus(array)
+{
+	var res="+"
+	var maxBase = plusChars.length;
+	var base = maxBase;
+
+	bi = 0;
+
+	for(var i=0;i<array.length;i++)
+	{
+		if(array[i].isNumber())
+		{
+			bi = Math.max(bi, Number(array[i]))
+		}
+		else if (array[i].replaceAll("g","").isNumber())
+		{
+			var nextnum = Number(array[i].replaceAll("g",""))+gloomOffset;
+			bi = Math.max(bi, nextnum);
+		}
+	}
+
+	for(var i=maxBase; i>1; i--)
+	{
+		if(i*i-1+(maxBase-i)>=bi)
+		{
+			base = i;
+			remainder = maxBase-i;
+			//console.log("base "+i+" works, calc:"+(i*i-1+(maxBase-i))+" with bi="+bi )
+		}
+	}
+
+	res = res + plusChars[base-1];
+
+	//console.log(res);
+	
+	return res + encodeByBase(array, base, remainder, plusChars)
+}
+
+function encodeByBase(array, base, remainder, charset)
+{
+	res = "";
+
+	for(var i=0;i<array.length;i++)
+	{
+		if(array[i].isNumber())
+		{
+			if(Number(array[i])<remainder)
+			{
+				res = res + charset[base+Number(array[i])]
+			}
+			else
+			{
+				res = res + numToBase(Number(array[i])-remainder, base, charset)
+			}
+			//console.log(res);
+		}
+		else if (array[i].replaceAll("g","").isNumber())
+		{
+			var nextnum = Number(array[i].replaceAll("g",""))+gloomOffset;
+			if(nextnum<remainder)
+			{
+				res = res + charset[base+nextnum]
+			}
+			else
+			{
+				res = res + numToBase(nextnum-remainder, base, charset)
+			}
+		}
+		else
+		{
+			if(i==0)
+			{
+				res = res + "("			}
+			else if(array[i-1].isNumber() || array[i-1].replaceAll('g','').isNumber())
+			{
+				res = res + "("
+			}
+			res = res + array[i];
+			if(i==array.length-1)
+			{
+				res = res +")"
+			}
+			else if(array[i+1].isNumber)
+			{
+				res = res +")"
+			}
+		}
+	}
+	return res;
+}
+
+function decodeAlgorithmPlus(string)
+{
+	base = plusChars.indexOf(string[0])+1;
+	remainder = plusChars.length-base;
+	res = ""
+	i=1;
+	console.log(string)
+	console.log(base)
+	console.log(remainder)
+
+
+
+	while(i<string.length)
+	{
+		//console.log(string[i] + " => " + res);
+		if(string[i]=="(")
+		{
+			i++;
+			while(i<string.length && string[i]!=")" )
+			{
+				res = res + string[i++];
+			}
+			i++
+		}
+		else
+		{
+			if(plusChars.indexOf(string[i])<=base)
+			{
+				nextnum = basedToNum(string[i]+string[i+1],base, plusChars)+remainder;
+				console.log("nextnum of "+string[i]+string[i+1]+" is "+nextnum);
+				i+=2;
+			}
+			else
+			{
+				nextnum = plusChars.indexOf(string[i])-base;
+				i+=1;
+			}
+
+			if(nextnum < gloomOffset)
+			{
+				res = res + nextnum;
+			}
+			else
+			{
+				res = res + "g" + (nextnum-gloomOffset);
+			}
+			gLastItem = nextnum;
+		}
+		res = res + ","
+	}
+
+	res = res.replaceAll(",,",",");
+
+	if(res[res.length-1]==",")
+	{
+		res = res.substring(0,res.length-1);
+	}
+	return res;
+}
+
+function numToBase(num, base, charset)
+{
+	var dec = 0;
+	var pla = 0;
+
+	while(num>0)
+	{
+		if(num>=base)
+		{
+			dec++;
+			num-=base;
+		}
+		else
+		{
+			pla++;
+			num--;
+		}
+	}
+
+	return charset[dec]+charset[pla];
+}
+
+function basedToNum(num, base, charset)
+{
+	var dec = charset.indexOf(num[0]);
+	var pla = charset.indexOf(num[1]);
+
+	return dec*base+pla;
+}
 
 function containsUppercase(str) {
   return /[A-Z]/.test(str);
