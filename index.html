@@ -3,47 +3,12 @@
 	<head>
 		<script src="calculations.js"></script>
 		<title>Item display list</title>
-		<style>
-			body{ background-color: #121621;
-				margin-left: 3em;
-				margin-right: 3em;
-				}
-			img{ 
-				width: 14em; 
-				margin-right: 0.5em;
-				margin-left: 0.5em;
-				border: 5px solid #323947;
-				border-radius: 3px;
-			}
-			p{color: #96A1B8; margin-left: 1em; margin-bottom: 0.1em;
-				font-size:1.1em; font-weight: bold; 
-				font-family:"Century Gothic", CenturyGothic, AppleGothic, sans-serif;}
-			span{color: #96A1B8;
-				font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
-				font-size:0.9em;
-				margin-top: 2em;
-				margin-bottom: 2em;}
-			h1{color: #A8BDED; 
-				font-family: Copperplate, "Copperplate Gothic Light", fantasy;
-				font-size: 2.2em;
-				margin-bottom: 0.3em;
-				letter-spacing: 0.04em;}
-			h3{color: #A8BDED; padding:0.1em; margin-bottom: 0.1em; font-family: Copperplate, "Copperplate Gothic Light", fantasy;}
-			form{
-				margin-top: 1em;
-				margin-bottom: 2em;
-			}
-			#ilength{color: #B9C4DC;}
-			div{float:left;}
-			#permalink{overflow: scroll; background: #fff; width:97%; float: none; white-space: nowrap;}
-			#permalink span{color: #111;}
-			#error{color:#d22;}
-		</style>
+		<link rel="stylesheet" href="dark-mode.css" id="theme-link">
 	</head>
 
 	<body>
+		<div id="themediv"><input type="button" id="themebtn" value="Light mode ☀️" onclick="switchTheme()"></div>
 		<h1>Frosthaven Item Display</h1>
-
 		<span>Item List:</span>
 		<input type="text" id="myText" placeholder="item csv" value="" size="50"><br><br>
 		<span>Identified items: </span><span id="ilist">0</span><br>

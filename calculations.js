@@ -3,6 +3,22 @@ var addMatMinus = 'z1234567890qwertyuiopasdfghjklnmQWERTYUIOPASDFGHJKLZXCVBNM+-'
 var plusChars = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM$-_.+!*\''
 var gloomOffset = 270;
 
+function switchTheme()
+{
+	const theme = document.getElementById("theme-link");
+	const themeButton = document.getElementById("themebtn");
+	if (theme.getAttribute("href") == "light-mode.css") {
+    // ... then switch it to "dark-theme.css"
+    theme.href = "dark-mode.css";
+    themeButton.value="Light mode ☀️";
+  // Otherwise...
+  } else {
+    // ... switch it to "light-theme.css"
+    theme.href = "light-mode.css";
+    themeButton.value="Dark mode 🌙";
+  }
+}
+
 function init()
 {
 	//console.log("ff fix?:" + window.top.location.href)
