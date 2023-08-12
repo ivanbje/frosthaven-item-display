@@ -4,7 +4,7 @@
 		<script src="calculations.js"></script>
 		<title>Item display list</title>
 		<style>
-			body{ background-color: #111520;
+			body{ background-color: #0F1523;
 				margin-left: 3em;
 				margin-right: 3em;
 				}
@@ -12,18 +12,28 @@
 				width: 14em; 
 				margin-right: 0.5em;
 				margin-left: 0.5em;
-				border: 5px solid #555;
+				border: 5px solid #323947;
+				border-radius: 3px;
 			}
-			p{color: #eee; margin-left: 1em; margin-bottom: 0.1em;}
-			span{color: #eee;
+			p{color: #737D94; margin-left: 1em; margin-bottom: 0.1em;
+				font-size:1.1em; font-weight: bold; 
+				font-family:"Century Gothic", CenturyGothic, AppleGothic, sans-serif;}
+			span{color: #737D94;
+				font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+				font-size:0.9em;
 				margin-top: 2em;
 				margin-bottom: 2em;}
-			h1{color: #ACD5F3;}
+			h1{color: #90A3CF; 
+				font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+				font-size: 2em;
+				margin-bottom: 0.3em;
+				letter-spacing: 0.04em;}
+			h3{color: #90A3CF; padding:0.1em; margin-bottom: 0.1em; font-family: Copperplate, "Copperplate Gothic Light", fantasy;}
 			form{
 				margin-top: 1em;
 				margin-bottom: 2em;
 			}
-			#ilength{color: #ACD5F3;}
+			#ilength{color: #ABB5C4;}
 			div{float:left;}
 			#permalink{overflow: scroll; background: #fff; width:97%; float: none; white-space: nowrap;}
 			#permalink span{color: #111;}
@@ -32,7 +42,7 @@
 	</head>
 
 	<body>
-		<h1>Frosthaven item display</h1>
+		<h1>Frosthaven Item Display</h1>
 
 		<span>Item List:</span>
 		<input type="text" id="myText" placeholder="item csv" value="" size="50"><br><br>

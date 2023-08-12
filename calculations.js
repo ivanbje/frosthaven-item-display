@@ -103,22 +103,37 @@ function calculate() {
 			}
 		}
 
-		//display image zz
-		const img = document.createElement("img");
-		if(gloomItem)
+		var imgdiv = null
+
+		if(zz != 0)
 		{
-			img.src = 'gloomItems/'+itemArray[zz];
+			//display image zz
+			const img = document.createElement("img");
+			if(gloomItem)
+			{
+				img.src = 'gloomItems/'+itemArray[zz];
+			}
+			else
+			{
+				img.src = 'items/'+itemArray[zz];
+			}
+			const title = document.createElement("p")
+			title.innerHTML = "Item "+itemlist[i];
+
+			imgdiv = document.createElement("div")
+			imgdiv.appendChild(title);
+			imgdiv.appendChild(img);
 		}
 		else
 		{
-			img.src = 'items/'+itemArray[zz];
-		}
-		const title = document.createElement("p")
-		title.innerHTML = "Item "+itemlist[i];
+			title = document.createElement("h3")
+			title.innerHTML = itemlist[i];
+			title.style.cssText += 'border-style: none none solid none;';
 
-		const imgdiv = document.createElement("div")
-		imgdiv.appendChild(title);
-		imgdiv.appendChild(img);
+			imgdiv = document.createElement("div");
+			imgdiv.appendChild(title);
+			imgdiv.style.cssText += 'clear:both;width:90%;margin:0.1em;padding:0.1em;';
+		}
 
 		images.appendChild(imgdiv);
 	}
