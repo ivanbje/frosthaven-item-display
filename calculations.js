@@ -49,6 +49,13 @@ function calculate() {
 
   	const img = document.createElement("img");
   	document.getElementById("ilist").innerHTML = x;
+  	if(x == "")
+  	{
+  		document.getElementById("myText").value = "001,002,003,004,005";
+  		x="001,002,003,004,005";
+  		alert("Please specify items to display. Now displaying the first 5 items!");
+  	}
+
 
   	//remove whitespace and add split on : or ;
   	x = x.replaceAll(" ","");

@@ -24,8 +24,8 @@ h1{color: #A8BDED;
 	letter-spacing: 0.04em;}
 h3{color: #A8BDED; padding:0.1em; margin-bottom: 0.1em; font-family: Copperplate, "Copperplate Gothic Light", fantasy;}
 form{
-	margin-top: 1em;
-	margin-bottom: 2em;
+	margin-top: 0em;
+	margin-bottom: 2.5em;
 }
 #ilength{color: #B9C4DC;}
 div{float:left;}
@@ -34,3 +34,32 @@ div{float:left;}
             border: 1px solid #031E39;}
 #permalink span{color: #111;}
 #themediv {float:right;}
+
+.button {
+  background-color: #8eabed;
+  border: none;
+  border-radius: 4px;
+  color: #121621;
+  padding: 0.5em 1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+}
+.button:hover {
+	background-image: linear-gradient(90deg, #aac7ff 0%, #c6e3ff 20%, #aac7ff 50%, #aac7ff 100%);
+	animation:slidebg 20s linear infinite;
+}
+.button:active {
+  transform: scale(1.1, 1.1);
+}
+
+.width {
+	width:90%;
+}
+
+@keyframes slidebg {
+  to {
+    background-position:20vw;
+  }
+}
