@@ -155,7 +155,7 @@ function calculate() {
 
 			imgdiv = document.createElement("div");
 			imgdiv.appendChild(title);
-			imgdiv.style.cssText += 'clear:both;width:90%;margin:0.1em;padding:0.1em;';
+			imgdiv.style.cssText += 'clear:both;width:90%;margin:0.1em;padding:0.1em;float:none;';
 		}
 
 		images.appendChild(imgdiv);
