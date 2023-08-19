@@ -58,8 +58,50 @@ div{float:left;}
 	width:90%;
 }
 
+#errorContainer {
+	position:absolute;
+	width: 100%;
+	top:-6em;
+	text-align: center;
+}
+#errorMsg {
+  background-color: #660000;
+  border: solid;
+  border-color: #da1e28;
+  border-radius: 4px;
+  color: #F7FDFF;
+  padding: 0.7em 1.5em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+  margin: auto;
+  float: none;
+}
+
+#errorText
+{
+	color: #EEEEFF;
+}
+
+
 @keyframes slidebg {
   to {
     background-position:20vw;
+  }
+}
+
+@keyframes errorMsgSlide {
+  0% {
+    top: -6em;
+  }
+  12% {
+    top: 1em;
+  }
+  88% {
+    top: 1em;
+  }
+  100% {
+    top: -6em;
   }
 }

@@ -3,25 +3,31 @@ var addMatMinus = 'z1234567890qwertyuiopasdfghjklnmQWERTYUIOPASDFGHJKLZXCVBNM+-'
 var plusChars = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM$-_.+!*\''
 var gloomOffset = 270;
 
-function switchTheme()
+function switchTheme(override)
 {
 	const theme = document.getElementById("theme-link");
 	const themeButton = document.getElementById("themebtn");
-	if (theme.getAttribute("href") == "light-mode.css") {
+	if (theme.getAttribute("href") == "light-mode.css" || override =='dark') {
     // ... then switch it to "dark-theme.css"
     theme.href = "dark-mode.css";
     themeButton.value="Light mode ☀️";
+    try {localStorage.setItem("item-display-theme","dark");} catch(error){console.log("Error saving theme to local storage; "+error);}
   // Otherwise...
   } else {
     // ... switch it to "light-theme.css"
     theme.href = "light-mode.css";
     themeButton.value="Dark mode 🌙";
+    try {localStorage.setItem("item-display-theme","light");} catch(error){console.log("Error saving theme to local storage; "+error);}
   }
 }
 
 function init()
 {
-	//console.log("ff fix?:" + window.top.location.href)
+	try {
+		switchTheme(localStorage.getItem("item-display-theme"));
+	} catch(error){
+		console.log("Error loading theme from local storage; "+error);
+	}
 
 	const queryString = getParentUrl();
 	if(queryString.slice(1).length > 0)
@@ -42,7 +48,7 @@ function init()
 }
 
 function calculate() {
-	
+	errors = "";
 
 	var x = document.getElementById("myText").value;
 	
@@ -53,7 +59,7 @@ function calculate() {
   	{
   		document.getElementById("myText").value = "001,002,003,004,005";
   		x="001,002,003,004,005";
-  		alert("Please specify items to display. Now displaying the first 5 items!");
+  		errors = errors + "Please specify items to display. Now displaying the first 5 items!";
   	}
 
 
@@ -69,10 +75,11 @@ function calculate() {
   	x = x.replaceAll("&","");
   	x = x.replaceAll("?","");
   	x = x.replaceAll("$","");
+  	x = x.replaceAll("%","");
   	if(x != z)
   	{
   		document.getElementById("myText").value = x;
-  		alert("Removed illegal Characters");
+  		errors = errors +" Identified and removed illegal Characters!";
   	}
 
   	itemlist = x.split(",");
@@ -166,7 +173,10 @@ function calculate() {
 
 	document.getElementById("ilist").innerHTML = identified.toString();
 	document.getElementById("ilength").innerHTML = noi;
-
+	if(errors != "")
+	{
+		createError(errors);
+	}
 }
 
 
@@ -177,7 +187,15 @@ var isNumber = function isNumber(value) {
 
 
 
-
+function createError(errormsg){
+	container = document.getElementById("errorContainer");
+	container.style.animation="none"
+	setTimeout(function() {
+        container.style.animation = 'errorMsgSlide 3s linear';
+    }, 1);
+	errortext = document.getElementById("errorText");
+	errortext.innerHTML = errormsg
+}
 
 
 
