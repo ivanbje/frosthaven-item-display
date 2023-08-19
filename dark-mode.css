@@ -21,7 +21,8 @@ h1{color: #A8BDED;
 	font-family: Copperplate, "Copperplate Gothic Light", fantasy;
 	font-size: 2.2em;
 	margin-bottom: 0.3em;
-	letter-spacing: 0.04em;}
+	letter-spacing: 0.04em;
+}
 h3{color: #A8BDED; padding:0.1em; margin-bottom: 0.1em; font-family: Copperplate, "Copperplate Gothic Light", fantasy;}
 form{
 	margin-top: 0em;
@@ -63,11 +64,38 @@ div{float:left;}
 	width: 100%;
 	top:-6em;
 	text-align: center;
+	pointer-events: none;
 }
 #errorMsg {
   background-color: #660000;
   border: solid;
   border-color: #da1e28;
+  border-radius: 4px;
+  padding: 0.7em 1.5em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+  margin: auto;
+  float: none;
+}
+
+#errorText
+{
+	color: #EEEEFF;
+}
+
+#successContainer {
+	position:absolute;
+	width: 100%;
+	top:-6em;
+	text-align: center;
+	pointer-events: none;
+}
+#successMsg {
+  background-color: #CCFFCC;
+  border: solid;
+  border-color: #74E374;
   border-radius: 4px;
   color: #F7FDFF;
   padding: 0.7em 1.5em;
@@ -79,7 +107,7 @@ div{float:left;}
   float: none;
 }
 
-#errorText
+#successText
 {
 	color: #EEEEFF;
 }

@@ -45,6 +45,23 @@ function init()
 			console.log(err)
 		}
 	}
+	else
+	{
+		try{
+			//lsinp = localStorage.getItem("item-display-string");
+			if(lsinp && lsinp.length > 0)
+			{
+				inp = inputDecode(lsinp);
+				document.getElementById("myText").value = inp;
+				calculate();
+				//createSuccess("Loaded items from last visit")
+			}
+		}
+		catch(error)
+		{
+			console.log("Loading items from storage failed or there are no items ("+error+")")
+		}
+	}
 }
 
 function calculate() {
@@ -67,6 +84,7 @@ function calculate() {
   	x = x.replaceAll(" ","");
   	x = x.replaceAll(":",",");
   	x = x.replaceAll(";",",");
+  	if(x[0]==","){x=x.slice(1)}
 
   	z = ''+x;
   	x = x.replace(/[^\x00-\x7F]/g, "");
@@ -101,6 +119,13 @@ function calculate() {
 	var plink = document.createElement("span");
 	plink.innerHTML = "https://ivanbje.github.io/frosthaven-item-display?"+urlext+"";
 	permalink.appendChild(plink);
+	try{
+		localStorage.setItem("item-display-string",urlext)
+	}
+	catch(error)
+	{
+		console.log("error saving items to local storage"+error)
+	}
 	//console.log("Desktop chrome permalink: https://ivanbje.github.io/frosthaven-item-display?"+urlext)
 
 
@@ -197,6 +222,15 @@ function createError(errormsg){
 	errortext.innerHTML = errormsg
 }
 
+function createSuccess(msg){
+	container = document.getElementById("successContainer");
+	container.style.animation="none"
+	setTimeout(function() {
+        container.style.animation = 'errorMsgSlide 3s linear';
+    }, 1);
+	errortext = document.getElementById("successText");
+	errortext.innerHTML = msg
+}
 
 
 
