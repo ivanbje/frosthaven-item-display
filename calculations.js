@@ -277,6 +277,12 @@ function inputEncode(array)
 		alg = alt;
 	}
 
+	alt = encodeAlgorithmPercent(array);
+	if(alt.length < alg.length)
+	{
+		//alg = alt; TODO: enable step after testing
+	}
+
 	return alg;
 }
 
