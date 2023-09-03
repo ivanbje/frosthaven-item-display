@@ -290,6 +290,10 @@ function inputDecode(string)
 	{
 		return decodeAlgorithmPlus(string.substring(1,string.length))
 	}
+	else if(string[0]=="%")
+	{
+		return decodeAlgorithmPercent(string.substring(1,string.length))
+	}
 	else
 	{
 		return decodeAlgorithmBase(string)
@@ -726,6 +730,152 @@ function decodeAlgorithmPlus(string)
 		res = res.substring(0,res.length-1);
 	}
 	return res;
+}
+
+
+function encodeAlgorithmPercent(array)
+{
+	res="%"
+	addMat = addMatMinus;
+
+	gLastItem = 0;
+	for(var i=0;i<array.length;i++)
+	{
+		var nextnum = -1;
+		if(array[i].isNumber())
+		{
+			var nextnum = Number(array[i])
+			
+		}
+		else if (array[i].replaceAll("g","").isNumber())
+		{
+			var nextnum = Number(array[i].replaceAll("g",""))+gloomOffset;
+		}
+
+		//console.log(nextnum)
+		if(nextnum != -1)
+		{
+			if( (nextnum-gLastItem)<addMat.length && (nextnum-gLastItem)>0)
+			{
+				res = res + addMat[(nextnum-gLastItem)-1];
+			}
+			else
+			{
+				res = res + "%";
+				nextnum = Number(nextnum)+addMat.length
+				i--;
+			}
+			gLastItem = Number(nextnum);
+		}
+		else
+		{
+			if(i==0)
+			{
+				res = res + "("			}
+			else if(array[i-1].isNumber())
+			{
+				res = res + "("
+			}
+			res = res + array[i];
+			if(i==array.length-1)
+			{
+				res = res +")"
+			}
+			else if(array[i+1].isNumber)
+			{
+				res = res +")"
+			}
+		}
+		//console.log(res);
+	}
+
+	
+	res = res.replaceAll("zz","x");
+	res = res.replaceAll("xx","c");
+	res = res.replaceAll("cc","v");
+	res = res.replaceAll("vv","b");
+	console.log(res);
+
+	return res;
+}
+
+function decodeAlgorithmPercent(string)
+{
+	gLastItem = 0;
+	addMat = addMatMinus;
+	var i=0;
+	var res = ""
+
+
+	ns = ''+string
+	string = "";
+	var j=0;
+	while(ns.indexOf("(") != -1 && j <ns.length)
+	{
+		//console.log(ns.indexOf("("))
+		ms = ns.substring(0,ns.indexOf("("));
+		es = ns.substring(ns.indexOf("("),ns.indexOf(")")+1)
+		ms = ms.replaceAll("b","vv");
+		ms = ms.replaceAll("v","cc");
+		ms = ms.replaceAll("c","xx");
+		ms = ms.replaceAll("x","zz");
+		string = string + ms;
+		string = string + es;
+		//console.log(ns + "index " + ns.indexOf(")"))
+		ns = '' + ns.substring(ns.indexOf(")")+1, ns.length)
+		//console.log(ns)
+		j++;
+		//console.log(string)
+	}
+	ns = ns.replaceAll("b","vv");
+	ns = ns.replaceAll("v","cc");
+	ns = ns.replaceAll("c","xx");
+	ns = ns.replaceAll("x","zz");
+	string = string + ns;
+	//console.log(string);
+	
+	
+	while(i<string.length)
+	{
+		//console.log(string[i] + " => " + res);
+		if(string[i]=="(")
+		{
+			i++;
+			while(i<string.length && string[i]!=")" )
+			{
+				res = res + string[i++];
+			}
+			i++
+		}
+		else
+		{
+			while(string[i] == "%")
+			{
+				gLastItem += addMat+length;
+				i++;
+			}
+			nextnum = addMat.indexOf(string[i++])+gLastItem+1;
+			if(nextnum < gloomOffset)
+			{
+				res = res + nextnum;
+			}
+			else
+			{
+				res = res + "g" + (nextnum-gloomOffset);
+			}
+			gLastItem = nextnum;
+		}
+		res = res + ","
+	}
+
+	res = res.replaceAll(",,",",");
+
+	if(res[res.length-1]==",")
+	{
+		res = res.substring(0,res.length-1);
+	}
+	return res;
+
 }
 
 function numToBase(num, base, charset)
