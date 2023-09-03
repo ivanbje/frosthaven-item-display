@@ -466,7 +466,7 @@ function encodeAlgorithmMinus(array)
 			}
 			else
 			{
-				res = res + "this is a long string"
+				res = res + "this is a very very very very very very very very very very very very very very very very long string"
 			}
 			gLastItem = Number(nextnum);
 		}
