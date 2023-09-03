@@ -281,7 +281,7 @@ function inputEncode(array)
 		alg = alt;
 	}
 
-	alt = encodeAlgorithmPercent(array);
+	//alt = encodeAlgorithmPercent(array); There is an infinite loop error in algorithm
 	if(alt.length < alg.length)
 	{
 		//alg = alt; TODO: enable step after testing
