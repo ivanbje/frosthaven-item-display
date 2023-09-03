@@ -24,7 +24,11 @@ function switchTheme(override)
 function init()
 {
 	try {
-		switchTheme(localStorage.getItem("item-display-theme"));
+		var initTheme = localStorage.getItem("item-display-theme");
+		if(initTheme && initTheme.length > 1)
+		{
+			switchTheme(initTheme);
+		}
 	} catch(error){
 		console.log("Error loading theme from local storage; "+error);
 	}
